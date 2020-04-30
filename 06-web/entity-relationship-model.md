@@ -124,6 +124,7 @@ Chen propuso las siguientes reglas informales para mapear
 descripciones en lenguaje natural a los conceptos usados en
 los diagramas E/R.
 
+
 | estructura gramatical     | Conepto E/R |
 |--------------------------:|-------------|
 | Sustantivo                | Entidad     |
