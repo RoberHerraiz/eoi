@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% load shield_filters %}
 
 {% block title %} Listado de metahumanos conocidos {% endblock %}
 
 {% block content %}
+
 
 <table class="table">
     <thead>
@@ -10,24 +12,31 @@
             <th>Nombre</th>
             <th>Nivel de amenaza</th>
             <th>Equipo</th>
+            <th>Poderes</th>
         </tr>
     </thead>
 
     {% for mh in items %}
     <tr>
-        <td> {{ mh.name }} </td>
-        <td> {{ mh.level }} </td>
-        <td> {{ mh.team }} </td>
-<<<<<<< HEAD
+        <td> {{ forloop.counter }}.-  {{ mh.name }} </td>
+        
+        <td> {{ mh.level|danger_level }} </td>
+        <td> {{ mh.team|default:"N/A" }} </td>
+        <td>
+            {% for power in mh.powers.all %}
+                {% if not forloop.first%}
+                    {% if forloop.last %}
+                        y
+                    {%else%}
+                        ,
+                    {%endif%}
+                {% endif %}
+                {{ power.name }}
+            {%endfor%}
+        </td>
+
     </tr>
     {% endfor %}
 </table>
 
 {% endblock content %}
-=======
-    </tr> 
-    {% endfor %}
-</table>
-
-{% endblock content %}
->>>>>>> 962ff782e31f1673615e4e69fa766cd5febe78db

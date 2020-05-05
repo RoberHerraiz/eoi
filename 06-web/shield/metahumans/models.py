@@ -50,7 +50,6 @@ class MetaHuman(models.Model):
     level = models.IntegerField(default=10)
     active = models.BooleanField(default=True)
     powers = models.ManyToManyField(Power)
-<<<<<<< HEAD
     ally = models.BooleanField(max_length=22, default=True)
     last_update = models.DateTimeField(auto_now=True)
     team = models.ForeignKey( # Many to One
@@ -60,16 +59,6 @@ class MetaHuman(models.Model):
             null=True, # para estos casos donde no hay equipo, ponme un null
             default=None, # y por defecto, cuando cree un superhéroe no va a estar asociado a ningun grupo
         )
-=======
-    last_update = models.DateTimeField(auto_now=True)
-    team = models.ForeignKey(
-        Team,
-        on_delete=models.PROTECT,
-        blank=True,
-        null=True,
-        default=None,
-    )
->>>>>>> 962ff782e31f1673615e4e69fa766cd5febe78db
 
     def __str__(self):
         return self.name

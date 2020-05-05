@@ -24,4 +24,5 @@ urlpatterns = [
     path('', commons.views.homepage),
     path('admin/', admin.site.urls),
     path('metahumans/', metahumans.views.list_all_metahumans),
+    path('teams/', metahumans.views.list_all_teams),
 ]

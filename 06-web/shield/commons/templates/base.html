@@ -1,16 +1,22 @@
 {% load static %}
+{% load leaflet_tags %}
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-    {% block title %} SHIELD {% endblock title %}
+    {% block title %} ERROR: Falta definir título {% endblock title %}
     </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
     <link  rel="icon"   href="{% static 'favicon.ico' %}"" type="image/png" />
- 
+    
+    {% block js %}{% endblock js %}
+    
+    {% block css %}{% endblock css %}
+
   </head>
   <body>
   <section class="section">
@@ -20,6 +26,7 @@
 
         {% block content %}
 
+        
         {% endblock content %}
 
     </div>
