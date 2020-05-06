@@ -11,23 +11,30 @@ class Team(models.Model):
     name = models.CharField(max_length=220)
     description = models.TextField(max_length=4000)
     headquarter =  models.CharField(max_length=100)
+    slug = models.SlugField(unique=True)
 
     def __str__(self):
         return self.name
 
 
 class Power(models.Model):
+
+    class Meta:
+        verbose_name = "Poder"
+        verbose_name_plural = "Poderes"
+
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=300)
     level = models.IntegerField(default=50)
 
     def __str__(self):
-        return f'{self.name}: {self.description}'
+        return self.name
 
 COUNTRIES = [
     ('US', 'United States'),
     ('ES', 'Spain'),
     ('UK', 'United Kingdom'),
+<<<<<<< HEAD
     ('OT', 'Others'),
     ]
 
@@ -43,8 +50,19 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
+=======
+    ('PL', 'Polonia'),
+    ('OT', "Others"),
+    ]
+
+>>>>>>> e428c7a107ee62527848e4e4586cfbb34e7f6d16
 
 class MetaHuman(models.Model):
+
+    class Meta:
+        verbose_name = "Metahumano"
+        verbose_name_plural = "Metahumanos"
+
     name = models.CharField(max_length=42)
     country = models.CharField(max_length=22, choices=COUNTRIES)
     level = models.IntegerField(default=10)

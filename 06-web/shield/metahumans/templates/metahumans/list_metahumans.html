@@ -18,6 +18,7 @@
 
     {% for mh in items %}
     <tr>
+<<<<<<< HEAD
         <td> {{ forloop.counter }}.-  {{ mh.name }} </td>
         
         <td> {{ mh.level|danger_level }} </td>
@@ -36,6 +37,21 @@
         </td>
 
     </tr>
+=======
+        <td> {{ mh.name }} </td>
+        <td> {{ mh.level|danger_level }} </td>
+        <td> 
+            {% if mh.team %}
+               {{ mh.team }}
+            {% endif %}
+        </td>
+        <td> 
+            {% for power in mh.powers.all %}
+                {{ power }}
+            {% endfor %}
+        </td>
+    </tr> 
+>>>>>>> e428c7a107ee62527848e4e4586cfbb34e7f6d16
     {% endfor %}
 </table>
 
