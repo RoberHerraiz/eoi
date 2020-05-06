@@ -3,11 +3,17 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 
+
 @register.filter
 def danger_level(level):
     if level < 30:
-        return mark_safe("<span style='color: green;'>Bajo</span>")
+        color = 'green'
+        label = 'Bajo'
     elif level < 66:
-        return mark_safe("<span style='color: orange;'>Medio</span>")
+        color = 'orange'
+        label = "Medio"
     else:
-        return mark_safe("<span style='color: red;'>Alto</span>")
+        color = 'red'
+        label = "Alto"
+    return mark_safe(f"<span style='color: {color};'>{label}</span>")
+

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load shield_filters %}
 
-{% block title %} Listado de metahumanos conocidos {% endblock %}
+{% block title %} Amenazas conocidas {% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,6 @@
     <thead>
         <tr>
             <th>Nombre</th>
-            <th>Nivel de amenaza</th>
             <th>Equipo</th>
             <th>Poderes</th>
         </tr>
@@ -18,10 +17,10 @@
     {% for mh in items %}
     <tr>
         <td> {{ mh.name }} </td>
-        <td> {{ mh.level|danger_level }} </td>
         <td> 
             {% if mh.team %}
-               {{ mh.team }}
+                <a href="{% url 'teams' %}">        
+                {{ mh.team }}
             {% endif %}
         </td>
         <td> 

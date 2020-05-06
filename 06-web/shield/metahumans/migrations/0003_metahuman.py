@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=42)),
-                ('country', models.CharField(choices=[('US', 'United States'), ('ES', 'Spain'), ('UK', 'United Kingdom'), ('OT', 'Others')], max_length=22)),
+                ('country', models.CharField(choices=[('US', 'United states'), ('ES', 'Spain'), ('UK', 'United Kingdom'), ('OT', 'Others')], max_length=2)),
                 ('level', models.IntegerField(default=10)),
                 ('active', models.BooleanField(default=True)),
                 ('powers', models.ManyToManyField(to='metahumans.Power')),

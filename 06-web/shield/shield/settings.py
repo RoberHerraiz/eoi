@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i98#ixbwx@44i3e@y$eecgx$)wm_2--=k&evpq7hma1e8ms1i%'
+SECRET_KEY = '3)(=!s6lowpd-&p_y&@avtz%6cf3jwvwc)!-r4x0%^ywe@kz-s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,12 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'leaflet',
-    
     'commons',
     'metahumans',
-
 ]
 
 MIDDLEWARE = [
@@ -123,4 +120,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+STATIC_PATH = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (28.48, -16.3),
+    'DEFAULT_ZOOM': 16,
+}
