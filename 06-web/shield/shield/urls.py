@@ -23,11 +23,6 @@ urlpatterns = [
 
     path('', commons.views.homepage),
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
     path('metahumans/', metahumans.views.list_all_metahumans),
     path('teams/', metahumans.views.list_all_teams),
-=======
-    path('metahumans/', metahumans.views.list_all_metahumans), 
-    path('teams/', metahumans.views.list_all_teams), 
->>>>>>> e428c7a107ee62527848e4e4586cfbb34e7f6d16
 ]

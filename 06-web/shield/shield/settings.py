@@ -37,13 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-<<<<<<< HEAD
 
     'leaflet',
     
-=======
-    'leaflet',
->>>>>>> e428c7a107ee62527848e4e4586cfbb34e7f6d16
     'commons',
     'metahumans',
 

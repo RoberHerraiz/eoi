@@ -34,7 +34,6 @@ COUNTRIES = [
     ('US', 'United States'),
     ('ES', 'Spain'),
     ('UK', 'United Kingdom'),
-<<<<<<< HEAD
     ('OT', 'Others'),
     ]
 
@@ -50,12 +49,6 @@ class Team(models.Model):
 
     def __str__(self):
         return self.name
-=======
-    ('PL', 'Polonia'),
-    ('OT', "Others"),
-    ]
-
->>>>>>> e428c7a107ee62527848e4e4586cfbb34e7f6d16
 
 class MetaHuman(models.Model):
 
