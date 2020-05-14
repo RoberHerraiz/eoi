@@ -10,11 +10,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
     conn, addr = s.accept()
     with conn:
-        msg = input('Your message: ').encode() #code str to bytes
-        s.sendall(msg)
-        data = s.recv(1024).decode('utf-8')
-        
         print('Connected by', addr)
+
+
         while True:
             data = conn.recv(1024)
             if not data:
@@ -22,3 +20,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             str_data = data.decode('utf-8')
             print(f'Client message: {str_data}')
             conn.sendall(data)
+            
+            msg = input('Your message: ').encode() #code str to bytes
+            if msg == b'exit':
+                break
+            conn.sendall(msg)
+            data = conn.recv(1024).decode('utf-8')
