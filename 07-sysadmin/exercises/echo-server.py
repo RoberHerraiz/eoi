@@ -26,3 +26,5 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 break
             conn.sendall(msg)
             data = conn.recv(1024).decode('utf-8')
+
+            #
