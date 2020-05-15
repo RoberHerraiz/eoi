@@ -55,7 +55,7 @@ class MetaHuman(models.Model):
     level = models.IntegerField(default=10)
     active = models.BooleanField(default=True)
     powers = models.ManyToManyField(Power)
-    last_update = models.DateTimeField(auto_now=True)
+    last_update = models.DateTimeField(auto_now=True, editable=True) #esto no rula
     team = models.ForeignKey(
         Team,
         on_delete=models.PROTECT,

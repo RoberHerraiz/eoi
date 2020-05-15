@@ -20,9 +20,10 @@ import commons.views
 import metahumans.views
 
 urlpatterns = [
-    path('', commons.views.homepage, name="homepage"),
-    path('admin/', admin.site.urls),
-    path('activos/', metahumans.views.list_all_metahumans, name='metahumans'),
-    path('equipos/', metahumans.views.list_all_teams, name='teams'),
-    path('equipos/<slug>/', metahumans.views.detail_team, name='team_detail'),
+
+    path('', commons.views.homepage, name='homepage'),
+    path('admin/', admin.site.urls,),
+    path('metahumans/', metahumans.views.list_all_metahumans, name="metahumans"),
+    path('teams/', metahumans.views.list_all_teams, name="teams"),
+    path('superhumans/', metahumans.views.supermetahumans, name="supermetahumans"),
 ]

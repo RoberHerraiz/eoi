@@ -2,7 +2,7 @@
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
-    <a class="navbar-item" href="/">
+   <a class="navbar-item" href="{% url 'homepage' %}">
         <img src="{% static 'logo.png' %}" width="32" height="32">
     </a>
 
@@ -16,7 +16,7 @@
   <div id="navbarBasicExample" class="navbar-menu">
 
     <div class="navbar-start">
-        <a class="navbar-item" href="{% url 'homepage' %}">
+      <a class="navbar-item" href="{% url 'homepage' %}">
         Inicio
         </a>
 
@@ -24,41 +24,24 @@
         Metahumanos
       </a>
 
-      <a class="navbar-item" href="{% url 'teams' %}">
-        Equipos
+      <a class="navbar-item" href="{% url 'supermetahumans' %}">
+        Amenazas
       </a>
 
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More
+        <a class="navbar-item" href="{% url 'teams' %}">
+          Equipos
         </a>
-
-        <div class="navbar-dropdown">
-          <a class="navbar-item">
-            About
-          </a>
-          <a class="navbar-item">
-            Jobs
-          </a>
-          <a class="navbar-item">
-            Contact
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item">
-            Report an issue
-          </a>
-        </div>
       </div>
-    </div>
+
 
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
           <a class="button is-primary">
-            <strong>Sign up</strong>
+            <strong>Registro</strong>
           </a>
           <a class="button is-light">
-            Log in
+            Inicia sesión
           </a>
         </div>
       </div>

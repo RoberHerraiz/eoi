@@ -10,11 +10,9 @@
 
 {% block content %}
 
-<div class="hero">
-  <div class="hero-body>
           
-    <h1 class="title">SHIELD</h1>
-    <h2 class="subtitle">Strategic Homeland Intervention, Enforcement, and Logistics Division</h2>
+    <h1>SHIELD</h1>
+    <h2>Strategic Homeland Intervention, Enforcement, and Logistics Division</h2>
 
     <p class="is-size-1 has-text-right">Welcome to our webpage!</p>
 
@@ -29,6 +27,13 @@
         {% leaflet_map "globalmap" %}
     </div>
 </div>
+
+    <img width="30%" height="30%" src="{% static 'logo.png' %}">
+
+
+    {% leaflet_map "globalmap" %}
+
+  
 
 
 {% endblock content %}

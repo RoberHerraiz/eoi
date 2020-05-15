@@ -23,3 +23,9 @@ def detail_team(request, slug):
     return render(request, "metahumans/detail_team.html", {
         "team": team,
     })
+
+def supermetahumans(request):
+    items = MetaHuman.objects.exclude(level__lte=65).exclude(active=False)
+    return render(request, "metahumans/list_supermetahumans.html", {
+        "items": items,
+    })

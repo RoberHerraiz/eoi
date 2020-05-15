@@ -12,7 +12,7 @@ admin.site.register(models.Power, PowerAdmin)
 
 
 class MetaHumanAdmin(admin.ModelAdmin):
-    list_display = ('name', 'country', 'active', 'level')
+    list_display = ('name', 'country', 'active', 'level', 'last_update')
     list_filter = ('active', 'level', 'powers')
 
 admin.site.register(models.MetaHuman, MetaHumanAdmin)

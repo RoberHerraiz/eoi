@@ -8,15 +8,17 @@
 <div class="columns is-multiline is-mobile">
     
 {% for team in items  %}
-    <div class="column is-half">
+    <div class="column is-one-third">
         <h2 class="title">
-            <a href="{% url 'team_detail' slug=team.slug %}">
+            <a href="{% url 'team_detail' slug=team.slug %}">  
             {{ team.name }}
             </a>
         </h2>
         <h3 class="subtitle">{{ team.description }}</h3>
     </div>
 {% endfor %}
+
+</div>
 
 </div>
 
