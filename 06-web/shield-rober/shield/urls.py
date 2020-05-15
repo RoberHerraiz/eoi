@@ -25,5 +25,6 @@ urlpatterns = [
     path('admin/', admin.site.urls,),
     path('metahumans/', metahumans.views.list_all_metahumans, name="metahumans"),
     path('teams/', metahumans.views.list_all_teams, name="teams"),
+    path('teams/<slug>/', metahumans.views.detail_team, name='detail_team'),
     path('superhumans/', metahumans.views.supermetahumans, name="supermetahumans"),
 ]
