@@ -1,0 +1,28 @@
+- hosts: vbox
+  tasks:
+    - name: ensure nginx is at the lastest version
+      apt:
+         name:
+         - nginx
+         - git
+         - jq
+         state: latest
+    - name: start nginx
+      service:
+        name: nginx
+        state: started
+    - name: Install uwsgi (pip)
+      pip:
+        name: uwsgi
+        version: latest
+    - name: Clone shield project (git)
+      git:
+        clone: yes
+        repo: https://github.com/RoberHerraiz/shield.git
+        dest: /var/www/html/shield
+    - name: Replace /etc/ssh/sshd_config (replace)
+      replace:
+        path: /etc/ssh/sshd_config
+        regexp: ^PasswordAuthentication no$
+        replace: PasswordAuthentication yes
+          
