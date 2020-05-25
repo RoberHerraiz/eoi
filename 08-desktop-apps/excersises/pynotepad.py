@@ -1,4 +1,4 @@
-from PyQt5.QtGui import *
+from PyQt5.QtGui import QKeySequence, QTextDocument
 from PyQt5.QtWidgets import *
 
 
@@ -7,7 +7,21 @@ app.setApplicationName('PyNotePad')
 
 editor = QPlainTextEdit()
 
-window = QMainWindow()
+class MyMainWindow(QMainWindow):
+
+    def closeEvent(self, e):
+        if not editor.document().isModified():
+            return
+        answer = QMessageBox.question(window,'Confirm closing',
+                'You have unsaved changes. Are you sure you want to exit?',
+                QMessageBox.Save | QMessageBox.Discard | QMessageBox.Cancel)
+        if answer == QMessageBox.Save:
+            if not save():
+                e.ignore()
+        elif answer == QMessageBox.Cancel:
+            e.ignore()
+
+window = MyMainWindow()
 window.setWindowTitle('PyNotePad')
 window.setCentralWidget(editor)
 
@@ -35,6 +49,8 @@ def save():
     else:
         with open(file_path, 'w') as f:
             f.write(editor.toPlainText())
+        editor.document().setModified(False)
+        return True
 
 
 def show_save_dialog():
@@ -43,6 +59,8 @@ def show_save_dialog():
     if filename:
         file_path= filename
         save()
+        return True
+    return False
 
 save_action = QAction('&Save file')
 save_action.triggered.connect(save)
@@ -70,7 +88,6 @@ help_menu = window.menuBar().addMenu('&Help')
 about_action = QAction('&About')
 about_action.triggered.connect(show_about_dialog)
 help_menu.addAction(about_action)
-
 
 
 window.resize(500, 600)
