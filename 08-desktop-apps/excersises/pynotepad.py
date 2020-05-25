@@ -1,5 +1,6 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import *
 
 
 app = QApplication([])
@@ -26,16 +27,21 @@ open_action.setShortcut(QKeySequence.Open)
 file_menu.addAction(open_action)
 
 
-# def show_save_dialog():
-#     filename, _ = QFileDialog.saveFile(filename)
-#     with open(filename, 'w') as f:
-#         f.write(editor.toPlainText())
+# WIP fast saving function
 
-# save_action = QAction('&Save')
-# save_action.triggered.connect(show_save_dialog)
-# file_menu.addAction(save_action)
+def show_save_dialog():
+    filename = QFile.fileName()
+    if filename:
+        with Open(filename, 'w') as f:
+            f.write(editor.toPlainText())
+
+save_action = QAction('&Save')
+save_action.triggered.connect(show_save_dialog)
+save_action.setShortcut(QKeySequence.Save)
+file_menu.addAction(save_action)
 
 # https://doc.qt.io/qt-5/qsavefile.html
+
 
 
 def show_save_as_dialog():
@@ -45,6 +51,7 @@ def show_save_as_dialog():
 
 save_as_action = QAction('&Save file')
 save_as_action.triggered.connect(show_save_as_dialog)
+save_as_action.setShortcut(QKeySequence.SaveAs)
 file_menu.addAction(save_as_action)
 
 
