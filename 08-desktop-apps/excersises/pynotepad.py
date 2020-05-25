@@ -6,6 +6,7 @@ app = QApplication([])
 app.setApplicationName('PyNotePad')
 
 editor = QPlainTextEdit()
+editor.document().setFont(QFont('TypeWriter', 12))
 
 def ask_for_confirmation():
     answer = QMessageBox.question(window,'Confirm closing',
@@ -92,13 +93,13 @@ save_action.setShortcut(QKeySequence.Save)
 file_menu.addAction(save_action)
 
 
-close_action = QAction("&Close")
+close_action = QAction("Close")
 close_action.triggered.connect(window.close) #signal
+close_action.setShortcut(QKeySequence.Quit) # shorcut
 file_menu.addAction(close_action) # asignamos a slot
 
 
-
-
+#cambiar fuente QTextPlain Editor a una monoespaciada
 
 def show_about_dialog():
     text = """
