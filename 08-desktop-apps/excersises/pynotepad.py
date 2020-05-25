@@ -1,6 +1,5 @@
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
 
 
 app = QApplication([])
@@ -14,12 +13,15 @@ window.setCentralWidget(editor)
 
 
 file_menu = window.menuBar().addMenu('&File') # Con "&" le indicamos el atajo de alt + .
+file_path = None
 
 def show_open_dialog():
+    global file_path
     filename, _ = QFileDialog.getOpenFileName(window, 'Open...')
     if filename:
         file_contents = open(filename, 'r').read()
         editor.setPlainText(file_contents)
+        file_path = filename
 
 open_action = QAction('&Open file')
 open_action.triggered.connect(show_open_dialog)
@@ -27,32 +29,25 @@ open_action.setShortcut(QKeySequence.Open)
 file_menu.addAction(open_action)
 
 
-# WIP fast saving function
-
-def show_save_dialog():
-    filename = QFile.fileName()
-    if filename:
-        with Open(filename, 'w') as f:
+def save():
+    if file_path is None:
+        show_save_dialog()
+    else:
+        with open(file_path, 'w') as f:
             f.write(editor.toPlainText())
 
-save_action = QAction('&Save')
-save_action.triggered.connect(show_save_dialog)
+
+def show_save_dialog():
+    global file_path
+    filename, _ = QFileDialog.getSaveFileName(window, 'Saving file...')
+    if filename:
+        file_path= filename
+        save()
+
+save_action = QAction('&Save file')
+save_action.triggered.connect(save)
 save_action.setShortcut(QKeySequence.Save)
 file_menu.addAction(save_action)
-
-# https://doc.qt.io/qt-5/qsavefile.html
-
-
-
-def show_save_as_dialog():
-    filename, _ = QFileDialog.getSaveFileName(window, 'Saving file...')
-    with open(filename, 'w') as f:
-        f.write(editor.toPlainText())
-
-save_as_action = QAction('&Save file')
-save_as_action.triggered.connect(show_save_as_dialog)
-save_as_action.setShortcut(QKeySequence.SaveAs)
-file_menu.addAction(save_as_action)
 
 
 close_action = QAction("&Close")
