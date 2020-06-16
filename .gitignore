@@ -21,3 +21,4 @@ build/
 .DS_Store
 venv/
 credenciales.py
+pymakr.conf
