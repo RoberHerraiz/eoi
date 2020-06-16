@@ -20,3 +20,4 @@ build/
 .swo
 .DS_Store
 venv/
+credenciales.py
