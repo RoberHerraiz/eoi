@@ -39,12 +39,12 @@ class APDS9930:
         # print(CH0_data)
         # print(CH1_data)
         # print(Prox_data)
-    
+
 
     def _read_word(self, reg):
         """ Lee un word (2 bytes, 16 bits) de un registro del sensor """
         # es una implementacion del codigo de ejemplo que aparece en el datasheet pag 15
-        registro_enmascarado = reg|0xA0  # para enteder esta mascara mirar Command Register pag 19 datasheet
+        registro_enmascarado = reg|0xA0  # para entender esta mascara mirar Command Register pag 19 datasheet
         # al wirteto le pasamos la direccion y los bytes que queremos escribir
         # puede ser en formato b'\x11\x43\xa8' o con bytearray donde le pasamos una lista o tupla con los bytes
         # aunque sea un solo byte se lo tenemos que pasar asi, como lista o tupla (tupla mas eficiente)
