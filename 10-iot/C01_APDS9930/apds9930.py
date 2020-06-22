@@ -11,8 +11,8 @@ class APDS9930:
     I2C_ADDRESS = const(0x39)  # (57 en decimal) es la direccion de este sensor que es fija y no se puede cambiar
     # utilizamos const para indicar que es un valor fijo que no va a cambiar nunca. Es mas eficiente en memoria
     def __init__(self, i2c):
-        self.i2c = i2c
-        # Todo esto es la inicializacion del sensor segun viene descrita en el datasheet pagina 15
+        self.i2c = i2c  # el manejador del i2c lo creamos fuera, porque si tenemos varios sensores en el bus, le pasamos el mismo a todos
+        # Todo lo que viene a continuacion es la inicializacion del sensor segun viene descrita en el datasheet pagina 15
         ATIME = 0xFF # 2.7 ms – minimum ALS integration time
         WTIME = 0xFF # 2.7 ms – minimum Wait time
         PTIME = 0xFF # 2.7 ms – minimum Prox integration time
