@@ -1,8 +1,9 @@
-from credenciales import ssid, password
+from machine import Pin, I2C
 import network
 import utime as time
-from machine import Pin, I2C
 
+from credenciales import ssid, password
+from apds9930 import APDS9930
 from juego import Juego
 
 def conectar_wifi():
@@ -15,16 +16,15 @@ def conectar_wifi():
     print('conectado!')
     print(red.ifconfig())
 
-# conectar_wifi()
-# juego = Juego("Rober .H")
-# juego.start()
 
-# from machine import Pin, I2C
-i2c = I2C(sda=Pin(5), scl=Pin(4))
-i2c.scan() #comprobamos que es 57
+i2c=I2C(sda=Pin(4), scl=Pin(5))
+try:
+    sensor = APDS9930(i2c)
+    sensor.activar_proximidad()
+except Exception as e:
+    sensor = None
 
-ADDR_SENSOR = 0x39
-
-i2c.writeto(ADDR_SENSOR, bytearray([0x12|0xA0])) # LE AVISAMOS QUE VAMOS QUEREMOS LEER
-resultado = i2c.readfrom(ADDR_SENSOR, 1)[0] # LE INDICAMOS QUE QUEREMOS LEER UN 1
-print(resultado)
+conectar_wifi()
+juego = Juego("Rober .H")
+juego.metodo_entrada(sensor)
+juego.start()

@@ -5,7 +5,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import (
         Qt, QAbstractTableModel, QVariant)
 
-file_name = "datos.csv"
+file_name = "data2.csv"
 headers = None
 rows = None
 with open(file_name, 'r') as csvfile:
