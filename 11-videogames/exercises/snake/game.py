@@ -9,23 +9,23 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode([WIDTH,HEIGHT])
+
         pygame.display.set_caption(TITLE)
         self.clock = pygame.time.Clock()
 
+        self.large_font = pygame.font.SysFont('arial', 100)
+        self.small_font = pygame.font.SysFont("arial", 32)
+        
+
+    def start_game(self):
         self.all_sprites = pygame.sprite.Group()
         self.fruits = pygame.sprite.Group()
 
-        self.font = pygame.font.SysFont("arial", 24)
-
-        self.reset()
-        
-
-    def reset(self):
-        self.all_sprites.empty()
-        self.fruits.empty()
         self.player = Player(self, 10, 10)
         self.fruit = Fruit(self)
+
         self.score = 0
+        self.run()
 
 
     def run(self):
@@ -35,6 +35,7 @@ class Game:
             self.event()
             self.update()
             self.draw()
+        self.game_over()
 
 
     def setup(self):
@@ -44,7 +45,11 @@ class Game:
     def event(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                self.playing = False
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    self.player.grow()
 
 
     def update(self):
@@ -58,8 +63,9 @@ class Game:
             fruit.teleport()
             self.score += 1
 
-        if not self.player.alive:
-            self.reset()
+        self.playing = self.player.alive
+
+
 
     def draw(self):
 
@@ -74,12 +80,77 @@ class Game:
         self.all_sprites.draw(self.screen)
         self.player.draw_tail(self.screen)
 
-        score_text = self.font.render(f'Score: {self.score}', True, WHITE)
+        score_text = self.small_font.render(f'Score: {self.score}', True, WHITE)
         self.screen.blit(score_text, (10, 10))
 
         pygame.display.flip() # para mostrar lo dibujado
 
 
+    #
+    #   MENU
+    #
+
+    def main_menu(self):
+        title_text = self.large_font.render('SNAKE', True, YELLOW)
+        instructions_text = self.small_font.render("Press any key to START", True, WHITE)
+
+        self.screen.fill(DARKGREY)
+        self.screen.blit(title_text,
+                        (WIDTH // 2 - title_text.get_rect().width // 2,
+                        HEIGHT // 2  - title_text.get_rect().height // 2))
+
+        self.screen.blit(instructions_text,
+                        (WIDTH // 2 - instructions_text.get_rect().width // 2,
+                        HEIGHT - 64))
+
+
+        pygame.display.flip()
+        pygame.time.delay(1000)
+
+        in_main_menu = True
+
+        while in_main_menu:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    in_main_menu = False
+                    self.start_game()
+
+
+    def game_over(self):
+        title_text = self.large_font.render('GAME OVER', True, YELLOW)
+        score_text = self.small_font.render(
+            f"Score: {self.score} [Press any key]", True, WHITE)
+
+        self.screen.fill(DARKGREY)
+        self.screen.blit(title_text,
+                        (WIDTH // 2 - title_text.get_rect().width // 2,
+                        HEIGHT // 2  - title_text.get_rect().height // 2))
+
+        self.screen.blit(score_text,
+                        (WIDTH // 2 - score_text.get_rect().width // 2,
+                        HEIGHT - 64))
+
+
+        pygame.display.flip()
+        pygame.time.delay(1000)
+
+        in_game_over = True
+
+        while in_game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    in_game_over = False
+                    self.main_menu()
+
+
+
+
 game = Game()
-game.run()
+game.main_menu()
 

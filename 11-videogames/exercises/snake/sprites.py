@@ -70,11 +70,10 @@ class Player(pygame.sprite.Sprite):
             self.x = 0
         if self.x < 0:
             self.x = GRIDWIDTH-1
-
-        if self.y >= GRIDWIDTH:
+        if self.y >= GRIDHEIGHT:
             self.y = 0
         if self.y < 0:
-            self.y = GRIDWIDTH-1
+            self.y = GRIDHEIGHT-1
 
 
     def update_tail(self):
@@ -94,7 +93,6 @@ class Player(pygame.sprite.Sprite):
         is_stopped = self.dx == 0 and self.dy == 0
         if not is_stopped and (self.x, self.y) in self.tail:
             self.alive = False
-            print('OUCH!')
 
     
 
