@@ -1,0 +1,5 @@
+# game settings
+GAME_TITLE = 'ARKANOID'
+WIDTH = 640
+HEIGHT = 480
+FPS = 30
