@@ -13,9 +13,19 @@ class Game:
     def start_game(self):
         self.all_sprites = pygame.sprite.Group()
         self.balls = pygame.sprite.Group()
+        self.bricks = pygame.sprite.Group()
+
         self.player = Pad(self, WIDTH // 2, HEIGHT - 64)
         self.ball = Ball(self, WIDTH // 2, HEIGHT - 128)
+        self.build_brick_wall()
         self.run()
+
+    def build_brick_wall(self):
+        for x in range (13):
+            for y in range(7):
+                brick_x = 70 + BRICK_WIDTH * x + 2*x
+                brick_y = 40 + BRICK_HEIGHT * y + 2*y
+                Brick(self, brick_x, brick_y)
     
     def run(self):
         self.playing = True
@@ -33,11 +43,21 @@ class Game:
 
     def update(self):
         self.all_sprites.update()
+        self.update_collisions()
+
+    def update_collisions(self):
 
         hits = pygame.sprite.spritecollide(self.player, self.balls, False)
         for ball in hits:
+            # ball.bounce(bricks[0], 0)
             self.player.hit_ball(ball)
 
+        brick_hits = pygame.sprite.groupcollide(
+            self.balls, self.bricks, False, False)
+
+        for ball, bricks in brick_hits.items():
+            ball.bounce(bricks[0], 0)
+            bricks[0].hit()
 
     def ball_lost(self):
         self.player.velocity = Vector2(0,0)
