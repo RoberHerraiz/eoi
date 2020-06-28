@@ -14,14 +14,20 @@ class Game:
         pygame.mixer.init()
         pygame.mixer.set_num_channels(16)
         pygame.display.set_caption(GAME_TITLE)
+        
         self.screen = pygame.display.set_mode([WIDTH, HEIGHT])
         self.clock = pygame.time.Clock()
+
+        self.large_font = pygame.font.SysFont('arial', 100)
+        self.small_font = pygame.font.SysFont("arial", 32)
+
         self.load_data()
+        self.main_menu()
 
     def load_data(self):
         root_folder = path.dirname(__file__)
         img_folder = path.join(root_folder, "img")
-        fx_folder = path.join(root_folder, "sound")
+        self.fx_folder = path.join(root_folder, "sound")
 
         # Load images
         brick_colors = ['blue', 'green', 'grey', 'purple', 'red', 'yellow']
@@ -38,11 +44,13 @@ class Game:
             path.join(img_folder, 'paddleBlu.png')).convert_alpha()
 
         # Load FX
-        self.bounce_fx = pygame.mixer.Sound(path.join(fx_folder, 'bounce.wav'))
-        self.break_fx = pygame.mixer.Sound(path.join(fx_folder, 'break.wav'))
-        pygame.mixer.music.load(path.join(fx_folder, 'Adventure.mp3'))
+        self.bounce_fx = pygame.mixer.Sound(path.join(self.fx_folder, 'bounce.wav'))
+        self.break_fx = pygame.mixer.Sound(path.join(self.fx_folder, 'break.wav'))
+        self.game_over_fx = pygame.mixer.Sound(path.join(self.fx_folder, 'game_over.ogg'))
 
     def start_game(self):
+        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.load(path.join(self.fx_folder, 'Adventure.mp3'))
         self.all_sprites = pygame.sprite.Group()
         self.balls = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
@@ -50,9 +58,10 @@ class Game:
         self.player = Pad(self, WIDTH // 2, HEIGHT - 64)
         self.ball = Ball(self, WIDTH // 2, HEIGHT - 128)
         self.build_brick_wall()
+        self.score = 0
+        self.lives = 3
         self.run()
-
-        # definir vidas y puntos
+        
 
     def build_brick_wall(self):
         brick_width = self.brick_images[0].get_rect().width
@@ -103,6 +112,7 @@ class Game:
             the_brick = bricks[0]
             ball.bounce(the_brick)
             the_brick.hit()
+            self.score += 10
 
     def multiple_ball_powerup(self):
         if len(self.balls.sprites()) == 0:
@@ -127,11 +137,22 @@ class Game:
             self.ball = Ball(self, self.player.rect.centerx,
                              self.player.rect.top - 32)
             self.in_game_balls = 1
+            self.lives -= 1
+        if self.lives <= 0:
+            self.game_over()
 
 
     def draw(self):
         self.screen.fill(DARKBLUE)
         self.all_sprites.draw(self.screen)
+
+        # Lives
+        lives_text = self.small_font.render(f'Lives:  {self.lives}', True, WHITE)
+        self.screen.blit(lives_text, (WIDTH - 165, HEIGHT - 75))
+
+        # Score
+        score_text = self.small_font.render(f'Score: {self.score}', True, WHITE)
+        self.screen.blit(score_text, (WIDTH - 165, HEIGHT - 45))
 
         # dibujar vidas y puntuación
 
@@ -142,6 +163,73 @@ class Game:
 
         pygame.display.flip()
 
+
+    #
+    # MENU
+    #
+
+
+    def main_menu(self):
+        title_text = self.large_font.render('ARKANOID', True, YELLOW)
+        instructions_text = self.small_font.render("Press any key to START", True, WHITE)
+
+        self.screen.fill(DARKGREY)
+        self.screen.blit(title_text,
+                        (WIDTH // 2 - title_text.get_rect().width // 2,
+                        HEIGHT // 2  - title_text.get_rect().height // 2))
+
+        self.screen.blit(instructions_text,
+                        (WIDTH // 2 - instructions_text.get_rect().width // 2,
+                        HEIGHT - 64))
+
+
+        pygame.display.flip()
+        pygame.time.delay(1000)
+
+        in_main_menu = True
+
+        while in_main_menu:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    in_main_menu = False
+                    self.start_game()
+                    pygame.time.delay(500)
+
+
+    def game_over(self):
+        pygame.mixer.music.stop()
+        self.game_over_fx.play()
+        title_text = self.large_font.render('GAME OVER', True, YELLOW)
+        score_text = self.small_font.render(
+            f"Score: {self.score} [Press any key]", True, WHITE)
+
+        self.screen.fill(DARKGREY)
+        self.screen.blit(title_text,
+                        (WIDTH // 2 - title_text.get_rect().width // 2,
+                        HEIGHT // 2  - title_text.get_rect().height // 2))
+
+        self.screen.blit(score_text,
+                        (WIDTH // 2 - score_text.get_rect().width // 2,
+                        HEIGHT - 64))
+
+
+        pygame.display.flip()
+        pygame.time.delay(1000)
+
+        in_game_over = True
+
+        while in_game_over:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+                if event.type == pygame.KEYDOWN:
+                    in_game_over = False
+                    self.main_menu()
+                    
 
 game = Game()
 game.start_game()
