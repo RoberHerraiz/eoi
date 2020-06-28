@@ -153,14 +153,7 @@ class Brick (pygame.sprite.Sprite):
     def hit(self):
         self.game.break_fx.play()
         self.kill()
-        self.random_powerup()
-
-    def random_powerup(self):
-        spawn_list = ['nothing', 'multiple_balls']
-        weights = [90, 11195]
-        random_spawn = random.choices(spawn_list, cum_weights=weights)
-        if random_spawn[0] == 'multiple_balls':
-            Multiple_powerup(self.game, self.position.x, self.position.y)
+        self.game.random_powerup(self.position.x, self.position.y)
 
         
 class Multiple_powerup (pygame.sprite.Sprite):
@@ -179,6 +172,7 @@ class Multiple_powerup (pygame.sprite.Sprite):
     def hit(self):
         self.game.break_fx.play()
         self.kill()
+        self.game.multiple_ball_powerup()
 
     def update(self):
         self.velocity += Vector2(0, 200) * self.game.dt

@@ -111,7 +111,7 @@ class Game:
 
         brick_hits = pygame.sprite.groupcollide(
             self.balls, self.bricks, False, False, self.hitbox_collide)
-
+d
         #hits .> [(ball,[brick, brick1, brick2]), (ball2, [brick2])...]
         for ball, bricks in brick_hits.items():
             the_brick = bricks[0]
@@ -121,8 +121,15 @@ class Game:
 
         powerup_hits = pygame.sprite.spritecollide(
             self.player, self.powerups, True, self.hitbox_collide)
-        for powerup_hits in hits:
-            self.player.hit_ball(ball)
+        for _ in powerup_hits:
+            self.powerup.hit()
+
+    def random_powerup(self, x, y):
+        spawn_list = ['nothing', 'multiple_balls']
+        weights = [90, 95]
+        random_spawn = random.choices(spawn_list, cum_weights=weights)
+        if random_spawn[0] == 'multiple_balls':
+            self.powerup = Multiple_powerup(self, x, y)
 
     def multiple_ball_powerup(self):
         if len(self.balls.sprites()) == 0:
