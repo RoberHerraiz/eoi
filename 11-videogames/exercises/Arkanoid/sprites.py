@@ -9,8 +9,6 @@ class Pad (pygame.sprite.Sprite):
         self.game = game
         self.groups = game.all_sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
-        # self.image = pygame.Surface((PAD_WIDTH, PAD_HEIGHT))
-        # self.image.fill(BLUE)
         self.image = game.pad_image
         self.rect = self.image.get_rect()
         self.rect.center = Vector2(x, y)
@@ -66,8 +64,6 @@ class Ball (pygame.sprite.Sprite):
         self.game = game
         self.groups = game.all_sprites, game.balls
         pygame.sprite.Sprite.__init__(self, self.groups)
-        # self.image = pygame.Surface((BALL_RADIUS, BALL_RADIUS))
-        # self.image.fill(YELLOW)
         self.image = game.ball_image
         self.rect = self.image.get_rect()
         self.rect.center = Vector2(x, y)
@@ -157,5 +153,36 @@ class Brick (pygame.sprite.Sprite):
     def hit(self):
         self.game.break_fx.play()
         self.kill()
-        
+        self.random_powerup()
 
+    def random_powerup(self):
+        spawn_list = ['nothing', 'multiple_balls']
+        weights = [90, 11195]
+        random_spawn = random.choices(spawn_list, cum_weights=weights)
+        if random_spawn[0] == 'multiple_balls':
+            Multiple_powerup(self.game, self.position.x, self.position.y)
+
+        
+class Multiple_powerup (pygame.sprite.Sprite):
+    def __init__(self, game, x, y):
+        self.game = game
+        self.groups = game.all_sprites, game.powerups
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.image = game.multiple_ball_powerup_image
+        self.rect = self.image.get_rect()
+        self.rect.center = Vector2(x, y)
+        self.hitbox = self.rect
+        self.position = Vector2(x, y)
+        self.velocity = Vector2(0, 0)
+        self.asleep = True
+
+    def hit(self):
+        self.game.break_fx.play()
+        self.kill()
+
+    def update(self):
+        self.velocity += Vector2(0, 200) * self.game.dt
+        self.position += self.velocity * self.game.dt
+        self.rect.center = self.position
+        v = abs(self.velocity.x * self.game.dt)
+        self.hitbox = self.rect.inflate(v, 0)

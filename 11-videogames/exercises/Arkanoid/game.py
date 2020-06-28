@@ -43,6 +43,10 @@ class Game:
         self.pad_image = pygame.image.load(
             path.join(img_folder, 'paddleBlu.png')).convert_alpha()
 
+        self.multiple_ball_powerup_image = pygame.image.load(
+            path.join(img_folder, 'element_blue_diamond.png')).convert_alpha()
+        
+
         # Load FX
         self.bounce_fx = pygame.mixer.Sound(path.join(self.fx_folder, 'bounce.wav'))
         self.break_fx = pygame.mixer.Sound(path.join(self.fx_folder, 'break.wav'))
@@ -54,6 +58,7 @@ class Game:
         self.all_sprites = pygame.sprite.Group()
         self.balls = pygame.sprite.Group()
         self.bricks = pygame.sprite.Group()
+        self.powerups = pygame.sprite.Group()
 
         self.player = Pad(self, WIDTH // 2, HEIGHT - 64)
         self.ball = Ball(self, WIDTH // 2, HEIGHT - 128)
@@ -74,7 +79,7 @@ class Game:
     
     def run(self):
         self.playing = True
-        pygame.mixer.music.play()
+        pygame.mixer.music.play()  
         while self.playing:
             self.dt = self.clock.tick(FPS) / 1000
             self.events()
@@ -113,6 +118,11 @@ class Game:
             ball.bounce(the_brick)
             the_brick.hit()
             self.score += 10
+
+        powerup_hits = pygame.sprite.spritecollide(
+            self.player, self.powerups, True, self.hitbox_collide)
+        for powerup_hits in hits:
+            self.player.hit_ball(ball)
 
     def multiple_ball_powerup(self):
         if len(self.balls.sprites()) == 0:
@@ -229,7 +239,7 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     in_game_over = False
                     self.main_menu()
-                    
+
 
 game = Game()
 game.start_game()
