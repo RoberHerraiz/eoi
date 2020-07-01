@@ -1,7 +1,7 @@
 from settings import *
 import pygame
 from pygame import Vector2
-from random import uniform
+from random import uniform, randint
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, game, x, y):
@@ -91,12 +91,15 @@ class Mob(pygame.sprite.Sprite):
         self.image = pygame.Surface((TILESIZE, TILESIZE))
         self.image.fill(color)
         self.rect = self.image.get_rect()
+        
 
         self.max_speed = max_speed + uniform(-max_speed * 0.25 , max_speed *  0.25)
         self.acceleration = acceleration
-        self.position = position * TILESIZE
+        self.position = position
+        self.rect.topleft = position
         self.desired_velocity = Vector2(0, 0)
         self.velocity = Vector2(0, 0)
+        self.avoidance = Vector2(0, 0)
         self.max_health = max_health
         self.health = max_health
 
@@ -108,7 +111,7 @@ class Mob(pygame.sprite.Sprite):
             self.desired_velocity = self.desired_velocity.normalize()
 
         self.velocity -= self.velocity * DRAG * self.game.dt
-        self.velocity += self.desired_velocity * self.acceleration * self.game.dt
+        self.velocity += (self.desired_velocity + self.avoidance) * self.acceleration * self.game.dt
         if self.velocity.magnitude() > self.max_speed:
             self.velocity.scale_to_length(self.max_speed)
 
@@ -151,6 +154,15 @@ class Mob(pygame.sprite.Sprite):
         bar_width = int(health * self.rect.width)
         health_bar = pygame.Rect(self.position.x, self.position.y - 7, bar_width, 5)
         pygame.draw.rect(self.game.screen, GREEN, health_bar)
+
+    def avoid_mobs(self):
+        towards_mobs = Vector2(0, 0)
+        for mob in self.game.mobs:
+            if mob != self:
+                towards_mob = mob.position - self.position
+                if 0 < towards_mob.magnitude() < AVOID_RADIUS:
+                    towards_mobs += towards_mob / towards_mob.magnitude()
+        self.avoidance = self.avoidance.lerp(-towards_mobs, self.game.dt)
 
 class Player(Mob):
     def __init__(self, game, position, max_speed, 
@@ -209,19 +221,58 @@ class Player(Mob):
 
 class Bee(Mob):
     def __init__(self, game, position, max_speed, 
-                 acceleration, max_health, damage, color):
+                 acceleration, max_health, damage, color, groups=()):
 
-        super().__init__(game, (game.all_sprites, game.mobs),
+        super().__init__(game, (game.all_sprites, game.mobs) + groups,
          position, max_speed, acceleration, max_health, color)
 
         self.damage = damage
     
     def update(self):
         towards_player = self.game.player.position - self.position
-        self.desired_velocity = towards_player
+        if towards_player.magnitude() <= BEE_VISION_RADIUS:  
+            self.desired_velocity = towards_player
+        else:
+            self.desired_velocity = Vector2(uniform(-1, 1),
+                                            uniform(-1, 1))
+        self.avoid_mobs()
         self.move()
         if pygame.sprite.collide_rect(self, self.game.player):
             self.game.player.receive_damage(self.damage * self.game.dt)
+
+class BeeNest(Mob):
+    def __init__(self, game, position, max_health, spawn_frequency, max_population, color):
+        super().__init__(game, (game.all_sprites, game.nests, game.mobs), position, 0, 0, max_health, color)
+        self.spawn_frequency = spawn_frequency
+        self.last_spawn_time = 0
+        self.max_population = max_population
+        self.population = pygame.sprite.Group()
+
+    def update(self):
+        time_since_last_spawn = pygame.time.get_ticks() - self.last_spawn_time
+        time_has_passed = time_since_last_spawn >= self.spawn_frequency
+        room_left = len(self.population) < self.max_population
+
+        if time_has_passed and room_left:
+            max_spawneable = self.max_population - len(self.population)
+            to_spawn = randint(1, max_spawneable)
+            for _ in range(to_spawn): 
+                Bee(
+                    self.game, 
+                    Vector2(self.position.x, self.position.y) + \
+                    Vector2(uniform(-TILESIZE, TILESIZE),
+                            uniform(-TILESIZE, TILESIZE)), 
+                    BEE_MAX_SPEED, 
+                    BEE_ACCELERATION, 
+                    BEE_HEALTH, 
+                    BEE_HIT_DAMAGE, 
+                    YELLOW,
+                    (self.population,)
+                )
+            self.last_spawn_time = pygame.time.get_ticks()
+
+
+
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, game, position, velocity,

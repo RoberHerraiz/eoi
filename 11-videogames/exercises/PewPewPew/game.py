@@ -16,16 +16,17 @@ class Game:
         self.playing = False
         self.load_data()
 
-        
-
     def load_data(self):
         self.all_sprites = pygame.sprite.Group()
         self.walls = pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.mobs = pygame.sprite.Group()
+        self.nests = pygame.sprite.Group()
 
         self.map = Map()
-        self.map.load_from_file('map.txt')
+        # self.map.load_from_file('map.txt')
+        # self.map.carve_cave_cellular_automata(self, WIDTH, HEIGHT)
+        self.map.carve_cave_drunken_diggers(self, WIDTH, HEIGHT)
         self.map.create_sprites_from_map_data(self)
 
         self.player = Player(
@@ -64,7 +65,14 @@ class Game:
 
         for mob in self.mobs:
             mob.draw_health()
+            ## debug
+            pygame.draw.line(self.screen, RED, mob.position,
+                             mob.position + mob.avoidance * 5, 3 )
 
+            pygame.draw.line(self.screen, BLUE, mob.position,
+                             mob.position + mob.desired_velocity * 5, 3 )
+            ## debug
+            
         self.draw_game_ui()
 
         pygame.display.flip()
