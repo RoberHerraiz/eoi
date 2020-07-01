@@ -111,7 +111,7 @@ class Game:
 
         brick_hits = pygame.sprite.groupcollide(
             self.balls, self.bricks, False, False, self.hitbox_collide)
-d
+
         #hits .> [(ball,[brick, brick1, brick2]), (ball2, [brick2])...]
         for ball, bricks in brick_hits.items():
             the_brick = bricks[0]
