@@ -4,6 +4,7 @@ from pygame import Vector2
 from settings import *
 import random
 
+
 class Map():
     def __init__(self):
         self.map_data = []
@@ -12,7 +13,7 @@ class Map():
     def load_from_file(self, filename):
         game_folder = path.dirname(__file__)
         data_folder = path.join(game_folder, 'data')
-        with open (path.join(data_folder, filename), 'r') as file:
+        with open(path.join(data_folder, filename), 'r') as file:
             for line in file:
                 self.map_data.append(line)
 
@@ -20,15 +21,18 @@ class Map():
         width = WIDTH // TILESIZE
         height = HEIGHT // TILESIZE
 
+        self.width = width
+        self.height = height
+
         self.map_data = [["1" if y == 0 or y == (height - 1) or x == 0 or x == (width - 1)
-                        else "0" for x in range(0, width)] for y in range(0, height)]
+                          else "0" for x in range(0, width)] for y in range(0, height)]
 
         starting_walls = (int)(width * height * 0.45)
         for _ in range(0, starting_walls):
             x = random.randint(1, width - 1)
             y = random.randint(1, height - 1)
             self.map_data[y][x] = "1"
-        
+
         iterations = 10
         self.smooth_map(iterations, width, height)
 
@@ -50,19 +54,21 @@ class Map():
                     else:
                         tmp_map[y][x] = "1" if sum >= 5 else "0"
             self.map_data = tmp_map.copy()
-        
+
     def carve_cave_drunken_diggers(self, game, width, height):
         width = WIDTH // TILESIZE
         height = HEIGHT // TILESIZE
 
-        self.map_data = [["1" for x in range(0, width)] 
-                        for y in range(0, height)]
+        self.width = width
+        self.height = height
 
+        self.map_data = [["1" for x in range(0, width)]
+                         for y in range(0, height)]
 
         iterations = (int)(width * height * 0.45)
         digger_count = 3
         diggers = [Vector2(width//2, height//2) for i in range(digger_count)]
-        neighbour_deltas = [(-1, 0),(0, 1), (1, 0), (0, -1)]
+        neighbour_deltas = [(-1, 0), (0, 1), (1, 0), (0, -1)]
 
         for _ in range(iterations):
             tmp_map = self.map_data.copy()
@@ -72,28 +78,37 @@ class Map():
                 if diggers[i].x < 1:
                     diggers[i].x = 1
                 if diggers[i].y < 1:
-                    diggers[i].y = 1   
-                if diggers[i].x > width -2:
-                    diggers[i].x = width -2
-                if diggers[i].y > height -2:
-                    diggers[i].y = height -2  
+                    diggers[i].y = 1
+                if diggers[i].x > width - 2:
+                    diggers[i].x = width - 2
+                if diggers[i].y > height - 2:
+                    diggers[i].y = height - 2
 
                 tmp_map[int(diggers[i].y)][int(diggers[i].x)] = "0"
-                    
+
             self.map_data = tmp_map.copy()
-        self.smooth_map(5, width, height)
+        # self.smooth_map(5, width, height)
+
+    def get_empty_position(self):
+        is_empty = False
+        while not is_empty:
+            x = random.randint(1, self.width - 1)
+            y = random.randint(1, self.height - 1)
+            if self.map_data[y][x] == "0":
+                return (x, y)
 
     def create_sprites_from_map_data(self, game):
         for row, tiles in enumerate(self.map_data):
             for col, tile in enumerate(tiles):
+                position = Vector2(col, row) * TILESIZE
                 if tile == '1':
                     Wall(game, col, row)
                 if tile == 'P':
-                    self.player_entry_point = Vector2(col, row) * TILESIZE
-                if tile =="b":
+                    self.player_entry_point = position
+                if tile == "b":
                     Bee(
                         game,
-                        Vector2(col, row) * TILESIZE,
+                        position,
                         BEE_MAX_SPEED,
                         BEE_ACCELERATION,
                         BEE_HEALTH,
@@ -103,11 +118,28 @@ class Map():
 
                 if tile == "B":
                     BeeNest(
-                            game,
-                            Vector2(col, row) * TILESIZE,
-                            BEE_NEST_HEALTH,
-                            BEE_NEST_SPAWN_FREQUENCY,
-                            BEE_NEST_MAX_POPULATION,
-                            DARKORANGE
-                            )
+                        game,
+                        position,
+                        BEE_NEST_HEALTH,
+                        BEE_NEST_SPAWN_FREQUENCY,
+                        BEE_NEST_MAX_POPULATION,
+                        DARKORANGE
+                    )
 
+                if tile == "h":
+                    HealthPack(
+                        game, 
+                        position, 
+                    )
+
+                if tile == "s":
+                    SpeedUp(
+                        game, 
+                        position, 
+                    )
+
+                if tile == "T":
+                    Tower(
+                        game, 
+                        position, 
+                    )

@@ -9,11 +9,12 @@ DARKBLUE = (25, 25, 50)
 YELLOW = (200, 200, 100)
 ORANGE = (200, 150, 100)
 DARKORANGE = (100, 75, 50)
+PURPLE = (182, 56, 157)
 
 # game settings
 WIDTH = 640
 HEIGHT = 480
-FPS = 30
+FPS = 60
 GAME_TITLE = "Pew Pew Pew"
 
 TILESIZE = 16
@@ -32,14 +33,70 @@ BEE_HEALTH = 10
 BEE_HIT_DAMAGE = 10
 BEE_VISION_RADIUS = 150
 
-GUN_FIRING_RATE = 100
-GUN_SPREAD = 0.1
-GUN_TTL = 2000
-GUN_SPEED = 300
-GUN_DAMAGE = 5
-GUN_COLOR = RED
-GUN_SIZE = 10
-
 BEE_NEST_SPAWN_FREQUENCY = 5000
 BEE_NEST_MAX_POPULATION = 5
 BEE_NEST_HEALTH = 100
+
+MOBS = {
+    'TOWER': {
+        'HEALTH': 100,
+        'COLOR': PURPLE,
+        'WEAPON_NAME': 'GUN'
+    },
+}
+
+
+ITEM_HOVER_SPEED = 0.01
+
+ITEMS = {
+    'HEALTHPACK': {
+        'HEAL': 20,
+        'FX': 'heal.wav',
+        'COLOR': RED
+    },
+
+    'SPEEDUP': {
+        'SPEED': 50,
+        'TTL': 3000,
+        'COLOR': BLUE
+    }
+}
+
+WEAPONS = {
+    'GUN': {
+        'FIRING_RATE': 250,
+        'SPREAD': 0.1,
+        'TTL':  2000,
+        'SPEED': 300,
+        'DAMAGE': 5,
+        'COLOR': RED,
+        'SIZE': 10,
+        'AMMO_PER_SHOT': 1,
+        'FX': "pewpewpew.wav"
+    },
+        'MACHINEGUN': {
+        'FIRING_RATE': 100,
+        'SPREAD': 0.1,
+        'TTL':  1500,
+        'SPEED': 300,
+        'DAMAGE': 2,
+        'COLOR': RED,
+        'SIZE': 8,
+        'AMMO_PER_SHOT': 1,
+        'FX': "papapapa.wav"
+    },
+        'SHOTGUN': {
+        'FIRING_RATE': 2000,
+        'SPREAD': 0.5,
+        'TTL':  500,
+        'SPEED': 300,
+        'DAMAGE': 10,
+        'COLOR': RED,
+        'SIZE': 8,
+        'AMMO_PER_SHOT': 10,
+        'FX': "kaboom.wav"
+    },
+}
+
+
+
