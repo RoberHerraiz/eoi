@@ -141,7 +141,7 @@ class Player(Mob):
         super().__init__(game, (game.all_sprites, game.players), position,
                          max_speed, acceleration, max_health, color)
         self.max_speed = max_speed
-        self.weapon_name = 'SHOTGUN'
+        self.weapon_name = 'MACHINEGUN'
 
     def update(self):
         self.handle_input()

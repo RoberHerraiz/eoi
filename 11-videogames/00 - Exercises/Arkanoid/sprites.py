@@ -3,7 +3,6 @@ import random
 import pygame
 from settings import *
 from pygame import Vector2
-from data import Data
 
 class Pad (pygame.sprite.Sprite):
     def __init__(self, game, x, y):
