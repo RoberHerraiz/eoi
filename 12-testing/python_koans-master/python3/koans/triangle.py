@@ -18,17 +18,18 @@
 #
 def triangle(a, b, c):
     equal_sides = 0
-    if a is b:
+    if a == b:
         equal_sides += 1
-    if a is c:
+    if a == c:
         equal_sides += 1
-    if b is c:
+    if b == c:
         equal_sides += 1
+    if a == b and a == c:
+        equal_sides = 2
 
     result = ['scalene', 'isosceles', 'equilateral']
 
     return result[equal_sides]
-    
     
 
 # Error class used in part 2.  No need to change this code.
