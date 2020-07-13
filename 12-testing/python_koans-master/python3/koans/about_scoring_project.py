@@ -33,13 +33,16 @@ from runner.koan import *
 # Your goal is to write the score method.
 
 def score(dice):
+    score_points = 0
     if len(dice) == 0:
         return 0
-    if dice[0] == 5:
-        return 50
-    if dice[0] == 1:
-        return 100
-        
+    for roll in dice:
+        if roll == 5:
+            score_points += 50
+        if roll == 1:
+            score_points += 100
+    return score_points
+
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
         self.assertEqual(0, score([]))
