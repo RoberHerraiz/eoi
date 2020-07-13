@@ -37,7 +37,9 @@ def score(dice):
         return 0
     if dice[0] == 5:
         return 50
-
+    if dice[0] == 1:
+        return 100
+        
 class AboutScoringProject(Koan):
     def test_score_of_an_empty_list_is_zero(self):
         self.assertEqual(0, score([]))
