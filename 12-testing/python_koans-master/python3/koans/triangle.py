@@ -27,6 +27,12 @@ def triangle(a, b, c):
     if a == b and a == c:
         equal_sides = 2
 
+    if a <= 0 or b <= 0 or c <= 0:
+        raise TriangleError()
+
+    if a + b < c or a + c < b or c + b < a:
+        raise TriangleError()
+
     result = ['scalene', 'isosceles', 'equilateral']
 
     return result[equal_sides]
