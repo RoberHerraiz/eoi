@@ -38,15 +38,46 @@ def score(dice):
 
     score_points = 0
     one_counter = 0
+    two_counter = 0
+    three_counter = 0
+    four_counter = 0
+    five_counter = 0
+    six_counter = 0
 
     for roll in dice:
-        if roll == 5:
-            score_points += 50
         if roll == 1:
             score_points += 100
             one_counter += 1
+        if roll == 2:
+            two_counter += 1
+        if roll == 3:
+            three_counter += 1
+        if roll == 4:
+            four_counter += 1
+        if roll == 5:
+            score_points += 50
+            five_counter += 1
+        if roll == 6:
+            six_counter += 1
+
     if one_counter >= 3:
         score_points += 700 # score_points at that point are 300, so 700 + 300 are 1000
+
+    if two_counter >= 3:
+        score_points += 200
+
+    if three_counter >= 3:
+        score_points += 300
+
+    if four_counter >= 3:
+        score_points += 400
+
+    if five_counter >= 3:
+        score_points += 350 # score_points at that point are 150, so 350 + 150 are 500
+
+    if six_counter >= 3:
+        score_points += 600
+        
     return score_points
 
 
