@@ -7,7 +7,7 @@
 Orden | Módulo
 --- | ---
 1 | Entorno de desarrollo
-2 | [Lenguaje](02-core/README.md)
+2 | Lenguaje
 3 | Testing
 4 | Patrones de diseño
 5 | Librerías destacadas
